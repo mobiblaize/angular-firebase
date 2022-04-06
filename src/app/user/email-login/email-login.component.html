@@ -1,0 +1,52 @@
+<mat-card class="mb-small">
+  <div *ngIf="isSignup">
+    <h3>Create Account</h3>
+    <button mat-stroked-button (click)="changeType('login')">Returning User?</button>
+  </div>
+  <div *ngIf="isLogin">
+    <h3>Sign In</h3>
+    <button mat-stroked-button (click)="changeType('signup')">New User?</button>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field [color]="email?.valid && 'accent'">
+      <input
+      matInput
+      formControlName="email"
+      type="email"
+      placeholder="Email"
+      autocomplete="off"
+      >
+      <mat-error *ngIf="email?.invalid && email?.touched">Enter a valid email</mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="password?.valid && 'accent'" *ngIf="!isPasswordReset">
+      <input
+      matInput
+      formControlName="password"
+      type="password"
+      placeholder="Password"
+      autocomplete="off"
+      >
+      <mat-error *ngIf="password?.invalid && password?.dirty">Enter a valid password</mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="passwordConfirm?.valid && 'accent'" *ngIf="isSignup">
+      <input
+      matInput
+      formControlName="passwordConfirm"
+      type="password"
+      placeholder="Confirm Password"
+      autocomplete="off"
+      >
+    </mat-form-field>
+
+    <mat-error class="server-error">{{serverMessage}}</mat-error>
+
+    <button mat-raised-button type="submit" color="accent" [disabled]="form.invalid || loading">Submit</button>
+
+  <div>
+    <h3>Reset Password</h3>
+    <button type="button" mat-button (click)="changeType('reset')">Reset</button>
+  </div>
+  </form>
+</mat-card>

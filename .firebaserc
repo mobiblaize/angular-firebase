@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "angular-firebase-2ef23": {
+      "hosting": {
+        "angular-firebase": [
+          "angular-firebase-2ef23"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "angular-firebase-2ef23"
+  }
+}
