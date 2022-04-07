@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-firebase",
+            "outputPath": "dist/angular-firebase/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -40,8 +40,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -113,6 +113,73 @@
             "firebaseProject": "angular-firebase-2ef23",
             "firebaseHostingSite": "angular-firebase-2ef23"
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/angular-firebase/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "scss",
+            "externalDependencies": [
+              "@nestjs/microservices",
+              "@nestjs/microservices/microservices-module",
+              "@nestjs/websockets",
+              "@nestjs/websockets/socket-module",
+              "cache-manager"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "angular-firebase:build:development",
+              "serverTarget": "angular-firebase:server:development"
+            },
+            "production": {
+              "browserTarget": "angular-firebase:build:production",
+              "serverTarget": "angular-firebase:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-firebase:build:production",
+              "serverTarget": "angular-firebase:server:production"
+            },
+            "development": {
+              "browserTarget": "angular-firebase:build:development",
+              "serverTarget": "angular-firebase:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
